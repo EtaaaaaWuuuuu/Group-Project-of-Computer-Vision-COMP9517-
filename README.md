@@ -2,7 +2,7 @@
 
 ## Traditional methods
 
-### Method 1 - SVMs
+### Method 1 - BOVW + SIFT + SVMs
  
 #### Prerequisites
  
