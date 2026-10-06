@@ -1,0 +1,34 @@
+\section{Literature Review}
+\label{sec:litreview}
+
+We review foundational and contemporary literature across feature representations, deep architectures, training strategies, and model evaluation for fine-grained visual categorization.
+
+%-------------------------------------------------------------------------
+\subsection{Handcrafted Baselines and Deep CNN Architectures}
+\label{sec:litreview-architectures}
+\label{sec:litreview-rf}
+\label{sec:litreview-svm}
+\label{sec:litreview-efficientnetv2}
+\label{sec:litreview-convnextv2}
+
+Early fine-grained visual categorization (FGVC) relied on handcrafted descriptors and classical classifiers. \textbf{Random Forests} combined global color histograms and texture descriptors (\eg, HOG) to leverage color attributes alongside edge boundaries~\cite{singh2018improved,HALLUR2025100366,sen2026featureengineering}. Concurrently, the \textbf{Bag-of-Visual-Words (BoVW)} framework encoded scale-invariant local keypoints (\eg, SIFT~\cite{lowe2004distinctive}). \textbf{RootSIFT}~\cite{arandjelovic2012three} improved SIFT by $L_1$-square-root normalization to approximate Hellinger kernel distances under Euclidean metrics. Codebooks were commonly enhanced via Spatial Pyramid Matching (SPM)~\cite{lazebnik2006beyond}, TF-IDF weighting, and soft assignment before linear \textbf{Support Vector Machine (SVM)} classification~\cite{csurka2004visual,cortes1995support}.
+
+Modern CNNs instead learn multi-scale hierarchies end-to-end. \textbf{EfficientNetV2}~\cite{tan2021efficientnetv2} uses compound scaling~\cite{tan2019efficientnet} with Fused-MBConv and squeeze-and-excitation blocks for parameter efficiency on species benchmarks~\cite{bloch2022snakeclef}. More recently, \textbf{ConvNeXt V2}~\cite{woo2023convnextv2} modernized pure CNNs with large $7 \times 7$ depthwise kernels~\cite{liu2022convnext} and Global Response Normalization (GRN), optimizing inter-channel competition to capture fine-grained morphological details.
+
+%-------------------------------------------------------------------------
+\subsection{Transfer Learning, Augmentation, and Regularization}
+\label{sec:litreview-training-strategies}
+\label{sec:litreview-transfer}
+
+Under per-class data scarcity (40 images/species), \textbf{transfer learning} from ImageNet provides an indispensable prior, yielding faster convergence and superior generalization over training from scratch~\cite{zhuang2021transfer}. Both CNNs benefit from \textbf{AdamW}~\cite{loshchilov2019decoupled} optimization with linear warmup~\cite{he2019bagoftricks} and cosine learning rate schedules~\cite{loshchilov2017sgdr}.
+
+To mitigate overfitting, data augmentation is crucial~\cite{shorten2019survey}. Standard spatial/photometric transforms (random cropping, flipping, color jitter) provide basic invariances. Advanced regularization further boosts generalization: \textbf{Stochastic Depth} drops residual branches~\cite{huang2016stochastic}, \textbf{CoarseDropout} occludes rectangular patches~\cite{devries2017improved}, and sample-mixing methods (\textbf{MixUp}~\cite{zhang2017mixup}, \textbf{CutMix}~\cite{yun2019cutmix}) construct convex linear combinations of inputs and targets to smooth decision boundaries.
+
+%-------------------------------------------------------------------------
+\subsection{Visual Explainability and Model Robustness}
+\label{sec:litreview-eval}
+\label{sec:litreview-interpretability}
+\label{sec:litreview-robustness}
+
+Deploying models in ecological settings requires explainability and robustness. \textbf{Grad-CAM}~\cite{selvaraju2017grad} computes gradient-weighted feature activations to verify whether predictions ground in authentic anatomy or background artifacts~\cite{zhou2016learning}. Concurrently, real-world deployment faces domain shifts from camera noise, blur, and compression. The \textbf{ImageNet-C} framework~\cite{hendrycks2019robustness} evaluates test-time corruption resilience across severity levels without retraining.
+

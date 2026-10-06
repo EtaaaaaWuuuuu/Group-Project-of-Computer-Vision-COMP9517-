@@ -1,0 +1,29 @@
+\section{Discussion}
+\label{sec:discussion}
+
+%-------------------------------------------------------------------------
+\subsection{Comparison with Traditional Methods}
+\label{sec:disc-traditional}
+Comparing traditional baselines (\cref{tab:rf-feature-comparison,tab:svm-test}) highlights local vs.\ global feature limits. Random Forest using global HSV histograms and HOG achieves only $3.95\%$ Top-1 ($2.31\%$ macro-F1) due to background and lighting sensitivity. Local RootSIFT keypoints with BoVW, soft assignment, and SPM reach $5.14\%$ Top-1 ($4.26\%$ macro-F1, \cref{tab:svm-test}), but at heavy computational cost (SVM training time rises from $9.0$ to $90.4$\,min, test encoding from $11.7$ to $142.6$\,s). Handcrafted features thus scale poorly for 1,000-class fine-grained tasks.
+
+%-------------------------------------------------------------------------
+\subsection{Deep Learning Method Comparison}
+\label{sec:disc-dl}
+EfficientNetV2-S and ConvNeXt V2-Tiny (\cref{tab:efficientnetv2-results,tab:main-results}) show that ImageNet pretraining is essential under low per-class data ($40$ images/species). Pretrained models perform best under light-to-moderate augmentation ($79.20\%$ Top-1 for EfficientNetV2 Crop+Flip; $81.00\%$ for ConvNeXt V2 Basic). From-scratch models severely underfit without heavy regularization, improving from $12.87\%$ (unaugmented) to $48.52\%$--$51.78\%$ with CutMix/MixUp and optimal $10$k-step warmup, yet remaining $>29$ percentage points below pretrained fine-tuning.
+
+%-------------------------------------------------------------------------
+\subsection{Overall Comparison}
+\label{sec:disc-overall}
+A cross-paradigm comparison (\cref{tab:overall-comparison}) reveals an overwhelming performance divide exceeding $75$ percentage points between handcrafted methods and deep CNNs. Traditional pipelines (Random Forest at $3.64\%$ Top-1 and BoVW RootSIFT-SVM at $5.14\%$) suffer from rigid feature spaces and orderless visual-word codebooks that lack the spatial hierarchies required to disambiguate 1{,}000 taxa in natural habitats. Under severe data scarcity (40 images/species), ImageNet pretraining proves indispensable: pretrained backbones achieve $79.20\%$ (EfficientNetV2-S) and $81.00\%$ (ConvNeXt V2-Tiny) Top-1 accuracy, substantially outpacing the strongest regularized from-scratch models ($51.78\%$).
+
+Between deep architectures, ConvNeXt V2-Tiny marginally outperforms EfficientNetV2-S ($81.00\%$ vs.\ $79.20\%$ Top-1; $80.97\%$ vs.\ $79.08\%$ macro-F1). Its $7 \times 7$ depthwise convolutions and Global Response Normalization (GRN) enhance inter-channel feature diversity, preserving subtle localized morphological cues (\eg, wing venation and petal geometry) more effectively. Moreover, the tight alignment between Top-1 accuracy and macro-F1 across both models confirms that performance gains generalize uniformly across all 1{,}000 species.
+
+%-------------------------------------------------------------------------
+\subsection{Interpretability and Robustness Insights}
+\label{sec:disc-interp}
+Grad-CAM heatmaps (\cref{sec:gradcam-qualitative}) confirm ConvNeXt V2 attends to anatomical morphology (\eg, abdominal markings, petal fan structures, wing spots) rather than background context. Misclassifications stem from fine-grained intra-genus ambiguity or forest clutter (\cref{fig:gradcam_incorrect}). Robustness evaluation (\cref{sec:robustness-eval}) shows high resilience to JPEG compression ($64.50\%$ Top-1 at Level 3, $q=10$) due to convolutional pooling over block noise, but high vulnerability to motion blur ($26.80\%$ at Level 4) and defocus blur ($35.00\%$) as spatial smoothing destroys sharp diagnostic edges.
+
+%-------------------------------------------------------------------------
+\subsection{Limitations and Future Directions}
+\label{sec:disc-limitations}
+Key limitations include heavy reliance on ImageNet pretraining under data scarcity ($40$ images/class) and vulnerability to field photographic blurs. Future work includes blur-aware training augmentations and self-supervised domain adaptation.

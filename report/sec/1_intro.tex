@@ -1,0 +1,8 @@
+\section{Introduction}
+\label{sec:intro}
+ 
+Automated species recognition from citizen-science imagery is vital for biodiversity monitoring and conservation~\cite{vanhorn2021inaturalist}. As a canonical \emph{fine-grained visual categorization} (FGVC) problem, it exhibits subtle inter-class morphological differences alongside severe intra-class variations in lighting, pose, and background clutter, compounded by low per-class training data.
+ 
+We benchmark this challenge on a 1{,}000-species subset of iNaturalist-2021 mini~\cite{vanhorn2021inaturalist} (40 train, 10 val, 10 test per species), systematically comparing two paradigms: (1) \emph{traditional pipelines} using handcrafted features (Random Forests with color histograms/HOG, and BoVW-RootSIFT with linear SVMs), and (2) \emph{deep CNNs} using EfficientNetV2-S~\cite{tan2021efficientnetv2} and ConvNeXt~V2-Tiny~\cite{woo2023convnextv2}. Across both architectures, we evaluate transfer learning vs.\ training from scratch alongside systematic augmentation and regularization ladders.
+ 
+Beyond predictive accuracy, we investigate model reliability via two post-hoc analyses: (i) \textbf{Grad-CAM}~\cite{selvaraju2017grad} interpretability to verify anatomical focus across correct, incorrect, and confusable species pairs, and (ii) \textbf{ImageNet-C} corruption benchmarks~\cite{hendrycks2019robustness} evaluating stability against noise, blur, and compression.
